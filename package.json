@@ -1,0 +1,11 @@
+{
+  "name": "advent-of-code-2024",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "day": "node index.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
