@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "day": "node index.js"
+    "day": "node index.js",
+    "generate_day": "node utils/generate.js"
   },
   "author": "",
   "license": "ISC"

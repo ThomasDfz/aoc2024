@@ -1,6 +1,8 @@
-const { input, example } = require('../parser');
+const { input, example } = require('../utils/parser');
 
-const reports = input
+const DEBUG = false;
+
+const reports = (DEBUG ? example : input)
   .split('\n')
   .map(line => line.split(' ').map(Number));
 
@@ -22,15 +24,15 @@ const isSafe = report => {
   return true;
 };
 
-const count = reports.reduce((acc, report) => acc + +isSafe(report), 0);
-
-console.log(`Part 1 : ${count}`);
-
-/**
- * Part 2
- */
 const dampener = report => report.map((_, i) => [...report.slice(0, i), ...report.slice(i + 1)]);
 
-const newCount = reports.reduce((acc, report) => acc + +dampener(report).some(isSafe), 0);
+const part1 = () => {
+  return reports.reduce((acc, report) => acc + +isSafe(report), 0);
+};
 
-console.log(`Part 2 : ${newCount}`);
+const part2 = () => {
+  return reports.reduce((acc, report) => acc + +dampener(report).some(isSafe), 0);
+};
+
+console.log(`Part 1 : ${part1()}`);
+console.log(`Part 2 : ${part2()}`);

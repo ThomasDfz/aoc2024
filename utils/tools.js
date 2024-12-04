@@ -1,0 +1,29 @@
+const transpose = matrix => matrix[0].map((col, i) => matrix.map(row => row[i]));
+
+const flip = matrix => matrix.map(row => row.reverse());
+
+const diagonals = matrix => {
+  const [width, length] = [matrix[0].length, matrix.length];
+  const diagonals = [];
+
+  for (let i = 0; i < (width + length - 1); i += 1) {
+    const diagonal = [];
+
+    let x = (width - 1 - i >= 0) ? 0 : Math.abs(width - 1 - i);
+    let y = (width - 1 - i < 0) ? 0 : width - 1 - i;
+
+    do {
+      diagonal.push(matrix[x][y]);
+    } while (matrix[++x]?.[++y] !== undefined);
+
+    diagonals.push(diagonal);
+  }
+
+  return diagonals;
+}
+
+module.exports = {
+  transpose,
+  flip,
+  diagonals,
+};
