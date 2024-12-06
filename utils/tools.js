@@ -22,8 +22,11 @@ const diagonals = matrix => {
   return diagonals;
 }
 
+const key = (...args) => args.join('-');
+
 module.exports = {
   transpose,
   flip,
   diagonals,
+  key,
 };
