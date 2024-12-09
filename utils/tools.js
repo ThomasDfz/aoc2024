@@ -24,9 +24,12 @@ const diagonals = matrix => {
 
 const key = (...args) => args.join('-');
 
+const range = (i, j) => Array.from({ length: j - i + 1 }, (_, index) => i + index);
+
 module.exports = {
   transpose,
   flip,
   diagonals,
   key,
+  range,
 };
