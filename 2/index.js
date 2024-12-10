@@ -27,11 +27,11 @@ const isSafe = report => {
 const dampener = report => report.map((_, i) => [...report.slice(0, i), ...report.slice(i + 1)]);
 
 const part1 = () => {
-  return reports.reduce((acc, report) => acc + +isSafe(report), 0);
+  return reports.sum(isSafe);
 };
 
 const part2 = () => {
-  return reports.reduce((acc, report) => acc + +dampener(report).some(isSafe), 0);
+  return reports.sum(report => dampener(report).some(isSafe));
 };
 
 console.log(`Part 1 : ${part1()}`);

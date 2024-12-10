@@ -11,7 +11,7 @@ const part1 = () => {
   const countOccurrences = text => [...text.matchAll(/(?=(XMAS))|(?=(SAMX))/g)].length;
 
   return [...grid, ...transpose(grid), ...diagonals(grid), ...diagonals(flip(grid))]
-    .reduce((acc, curr) => acc + countOccurrences(curr.join('')), 0);
+    .sum(curr => countOccurrences(curr.join('')));
 };
 
 const part2 = () => {

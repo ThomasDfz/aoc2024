@@ -8,7 +8,7 @@ const memory = (DEBUG ? example : input)
 
 const part1 = () => {
   return [...memory.matchAll(/mul\((\d{1,3}),(\d{1,3})\)/g)]
-    .reduce((sum, operation) => sum + (Number(operation[1]) * Number(operation[2])), 0);
+    .sum(operation => Number(operation[1]) * Number(operation[2]));
 };
 
 const part2 = () => {

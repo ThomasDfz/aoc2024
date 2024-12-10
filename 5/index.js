@@ -1,5 +1,4 @@
 const { input, example } = require('../utils/parser');
-require('../utils/customProperties');
 
 const DEBUG = false;
 
@@ -35,11 +34,11 @@ const fix = update => {
 };
 
 const part1 = () => {
-  return updates.reduce((acc, update) => acc + (isOrdered(update) ? update.middle : 0), 0);
+  return updates.sum(update => isOrdered(update) ? update.middle : 0, 0);
 };
 
 const part2 = () => {
-  return updates.reduce((acc, update) => acc + (isOrdered(update) ? 0 : fix(update).middle), 0);
+  return updates.sum(update => isOrdered(update) ? 0 : fix(update).middle, 0);
 };
 
 console.log(`Part 1 : ${part1()}`);

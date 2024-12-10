@@ -6,9 +6,9 @@ const day = process.argv[2];
 const folder = path.resolve(day);
 const template = `const { input, example } = require('../utils/parser');
 
-const DEBUG = false;
+const DEBUG = true;
 
-const data = (DEBUG ? example : input)
+const data = (DEBUG ? example : input);
 
 const part1 = () => {
   return 0;

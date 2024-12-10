@@ -29,11 +29,11 @@ const isValid = (target, operands, operators) => {
 };
 
 const part1 = () => {
-  return equations.reduce((acc, { target, operands }) => acc + (isValid(target, operands, [add, multiply]) ? target : 0), 0);
+  return equations.sum(({ target, operands }) => isValid(target, operands, [add, multiply]) ? target : 0);
 };
 
 const part2 = () => {
-  return equations.reduce((acc, { target, operands }) => acc + (isValid(target, operands, [add, multiply, concat]) ? target : 0), 0);
+  return equations.sum(({ target, operands }) => isValid(target, operands, [add, multiply, concat]) ? target : 0);
 };
 
 console.log(`Part 1 : ${part1()}`);

@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+require('./customProperties');
 
 const parse = file => fs
   .readFileSync(path.join(path.dirname(require.main.filename), file), 'utf8')
