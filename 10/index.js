@@ -43,11 +43,7 @@ const recursiveSearch = ({ x, y }) => {
 
   const summits = neighbours
     .filter(neighbour => grid.get(key(neighbour.x, neighbour.y)) === height + 1)
-    .reduce((acc, neighbour) => {
-      acc.push(...recursiveSearch(neighbour));
-
-      return acc;
-    }, []);
+    .reduce((acc, neighbour) => [...acc, ...recursiveSearch(neighbour)], []);
 
   memory.set(position, summits);
 

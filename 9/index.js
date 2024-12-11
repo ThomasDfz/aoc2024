@@ -8,7 +8,7 @@ const map = (DEBUG ? example : input)
   .map(Number);
 
 // test golf
-const part1 = () => {let f=[...map],c=s=i=0,j=f.length-1-+!f.length%2;while(j>=i){f[i]?(i%2?(f[j]?(f[j]--,f[i]--,s+=c++*j/2):j-=2):(f[i]--,s+=c++*i/2)):i++}return s}
+const part1 = () => {let f=[...map],c=s=i=0,l=f.length,j=l-1-+!l%2;while(j>=i){f[i]?(i%2?(f[j]?(f[j]--,f[i]--,s+=c++*j/2):j-=2):(f[i]--,s+=c++*i/2)):i++}return s}
 
 class Segment {
   constructor(addresses, takenSpace, freeSpace, id = 'N/A') {
