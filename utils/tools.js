@@ -24,12 +24,23 @@ const diagonals = matrix => {
 
 const key = (...args) => args.join('-');
 
+const unkey = str => str.split('-').map(Number);
+
 const range = (from, to) => Array.from({ length: to - from + 1 }, (_, index) => from + index);
+
+const neighborhood = (x, y) => [
+  { x: x + 1, y },
+  { x: x - 1, y },
+  { x, y: y + 1 },
+  { x, y: y - 1 },
+];
 
 module.exports = {
   transpose,
   flip,
   diagonals,
   key,
+  unkey,
   range,
+  neighborhood,
 };

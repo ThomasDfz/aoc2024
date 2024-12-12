@@ -15,3 +15,13 @@ Object.defineProperties(Array.prototype, {
     },
   },
 });
+
+Object.defineProperties(Map.prototype, {
+  append: {
+    value(k, v) {
+      this.has(k) ? this.get(k).push(v) : this.set(k, [v]);
+
+      return this;
+    }
+  }
+});

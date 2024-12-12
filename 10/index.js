@@ -1,5 +1,5 @@
 const { input, example } = require('../utils/parser');
-const { key } = require('../utils/tools');
+const { key, neighborhood } = require('../utils/tools');
 
 const DEBUG = false;
 
@@ -32,12 +32,7 @@ const recursiveSearch = ({ x, y }) => {
     return memory.get(position);
   }
 
-  const neighbours = [
-    { x: x + 1, y },
-    { x: x - 1, y },
-    { x, y: y + 1 },
-    { x, y: y - 1 },
-  ];
+  const neighbours = neighborhood(x, y);
 
   const height = grid.get(position);
 
