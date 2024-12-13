@@ -28,7 +28,7 @@ const recursivelyBuildRegion = (x, y, region) => {
 
 const searchRegions = () => {
   if (regions && regions.length) {
-    return regions;
+    return;
   }
 
   for (let x = 0; x < map.length; x += 1) {
@@ -57,16 +57,16 @@ const countConsecutives = array => {
 
   const sorted = [...new Set(array)].sort((a, b) => a - b);
 
-  return sorted.reduce((count, current, index) => {
-    if (index === 0 || current !== sorted[index - 1] + 1) {
-      count++;
+  return sorted.reduce((sum, curr, i) => {
+    if (i === 0 || curr !== sorted[i - 1] + 1) {
+      sum++;
     }
 
-    return count;
+    return sum;
   }, 0);
 };
 
-const countSides = (region) => {
+const countSides = region => {
   let sum = 0;
 
   const regionSides = [...region].map(cell => {
