@@ -35,6 +35,10 @@ const neighborhood = (x, y) => [
   { x, y: y - 1 },
 ];
 
+const mod = (n, m) => ((n % m) + m) % m;
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
 module.exports = {
   transpose,
   flip,
@@ -43,4 +47,6 @@ module.exports = {
   unkey,
   range,
   neighborhood,
+  mod,
+  sleep,
 };

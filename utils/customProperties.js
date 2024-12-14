@@ -23,5 +23,12 @@ Object.defineProperties(Map.prototype, {
 
       return this;
     }
-  }
+  },
+  increment: {
+    value(k) {
+      this.has(k) ? this.set(k, this.get(k) + 1) : this.set(k, 1);
+
+      return this;
+    }
+  },
 });
