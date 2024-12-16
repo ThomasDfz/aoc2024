@@ -1,36 +1,35 @@
 const { input, example } = require('../utils/parser');
-const { key, unkey, range } = require('../utils/tools');
+const { key, unkey } = require('../utils/tools');
 
 const DEBUG = false;
 
 const data = (DEBUG ? example : input).split('\n\n');
 const instructions = data[1].split('');
-
+const warehouse = data[0]
+  .split('\n')
+  .map((line, x) => line
+    .split('')
+    .map((cell, y) => ({ x, y, cell })))
+  .flat();
 
 const part1 = () => {
   const walls = new Set();
   const boxes = new Set();
   let robot;
 
-  data[0]
-    .split('\n')
-    .forEach((line, x) => {
-      line
-      .split('')
-      .forEach((cell, y) => {
-        switch (cell) {
-          case '#':
-            walls.add(key(x, y));
-            break;
-          case 'O':
-            boxes.add(key(x, y));
-            break;
-          case '@':
-            robot = { x, y };
-            break;
-        }
-      });
-    });
+  warehouse.forEach(({ x, y, cell }) => {
+    switch (cell) {
+      case '#':
+        walls.add(key(x, y));
+        break;
+      case 'O':
+        boxes.add(key(x, y));
+        break;
+      case '@':
+        robot = { x, y };
+        break;
+    }
+  });
 
   const move = (vx, vy) => {
     let y = robot.y + vy;
@@ -85,27 +84,21 @@ const part2 = () => {
   const boxes = new Map();
   let robot;
 
-  data[0]
-    .split('\n')
-    .forEach((line, x) => {
-      line
-      .split('')
-      .forEach((cell, y) => {
-        switch (cell) {
-          case '#':
-            walls.add(key(x, y * 2));
-            walls.add(key(x, y * 2 + 1));
-            break;
-          case 'O':
-            boxes.set(key(x, y * 2), true);
-            boxes.set(key(x, y * 2 + 1), false);
-            break;
-          case '@':
-            robot = { x, y: y * 2 };
-            break;
-        }
-      });
-    });
+  warehouse.forEach(({ x, y, cell }) => {
+    switch (cell) {
+      case '#':
+        walls.add(key(x, y * 2));
+        walls.add(key(x, y * 2 + 1));
+        break;
+      case 'O':
+        boxes.set(key(x, y * 2), true);
+        boxes.set(key(x, y * 2 + 1), false);
+        break;
+      case '@':
+        robot = { x, y: y * 2 };
+        break;
+    }
+  });
 
   const moveHorizontal = vy => {
     let y = robot.y + vy;
@@ -123,24 +116,71 @@ const part2 = () => {
 
     if (pushingBoxes) {
       boxes.delete(key(robot.x, robot.y + vy));
-      boxes.set(key(x, y), true);
-      range(robot.y + 2, y - 1).map(yb => boxes.set(key(x, yb), !boxes.get(key(x, yb))));
+      boxes.set(key(x, y), vy === -1);
+
+      for (let i = robot.y + vy * 2; (i * vy) < (y * vy); i += vy) {
+        boxes.set(key(x, i), !boxes.get(key(x, i)));
+      }
     }
 
     robot.y = robot.y + vy;
   };
 
   const moveVertical = vx => {
-    // todo
+    let y = robot.y;
+    let x = robot.x + vx;
+
+    if (walls.has(key(x, y))) {
+      return;
+    }
+
+    if (!walls.has(key(x, y)) && !boxes.has(key(x, y))) {
+      robot.x += vx;
+      return;
+    }
+
+    let boxesToMove = new Map();
+
+    const recursiveBoxSearch = (x, y, vx) => {
+      if (walls.has(key(x + vx, y))) {
+        throw new Error();
+      }
+
+      if (boxes.get(key(x + vx, y)) === true) {
+        boxesToMove.set(key(x + vx, y), true);
+        boxesToMove.set(key(x + vx, y + 1), false);
+        recursiveBoxSearch(x + vx, y, vx);
+        recursiveBoxSearch(x + vx, y + 1, vx);
+      }
+
+      if (boxes.get(key(x + vx, y)) === false) {
+        boxesToMove.set(key(x + vx, y), false);
+        boxesToMove.set(key(x + vx, y - 1), true);
+        recursiveBoxSearch(x + vx, y, vx);
+        recursiveBoxSearch(x + vx, y - 1, vx);
+      }
+    };
+
+    try {
+      recursiveBoxSearch(robot.x, robot.y, vx);
+
+      boxesToMove.forEach((_, k) => boxes.delete(k));
+      boxesToMove.forEach((value, k) => {
+        const [x, y] = unkey(k);
+        boxes.set(key(x + vx, y), value);
+      });
+
+      robot.x += vx;
+    } catch (_) {}
   };
 
   instructions.forEach(instruction => {
     switch (instruction) {
       case '^':
-        moveVertical(-1, 0);
+        moveVertical(-1);
         break;
       case 'v':
-        moveVertical(1, 0);
+        moveVertical(1);
         break;
       case '>':
         moveHorizontal(1);
@@ -151,11 +191,16 @@ const part2 = () => {
     }
   });
 
-  return [...boxes.values()].sum(box => {
-    const [x, y] = unkey(box);
+  let sum = 0;
+  boxes.forEach((leftSide, key) => {
+    if (leftSide) {
+      const [x, y] = unkey(key);
 
-    return x * 100 + y;
+      sum += 100 * x + y;
+    }
   });
+
+  return sum;
 };
 
 console.log(`Part 1 : ${part1()}`);
